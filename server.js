@@ -22,7 +22,7 @@ db.connect((err) => {
     console.log('Successfully connected to the MySQL database (recipe_app_db)!');
 });
 
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/auth')(db);
 app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
