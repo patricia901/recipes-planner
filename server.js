@@ -10,7 +10,7 @@ app.use(cors());
 const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
-    password: 'YOUR_MYSQL_PASSWORD_HERE',
+    password: 'P@ti28122005',
     database: 'recipe_app_db'
 });
 
@@ -21,6 +21,9 @@ db.connect((err) => {
     }
     console.log('Successfully connected to the MySQL database (recipe_app_db)!');
 });
+
+const authRoutes = require('./routes/auth');
+app.use('/api/auth', authRoutes);
 
 app.get('/', (req, res) => {
     res.send('Server is running and ready for recipes!');
