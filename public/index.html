@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe & Meal Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container nav-bar">
+            <h1>🍳 Recipe & Meal Planner</h1>
+            <div id="user-info" class="hidden">
+                <span id="welcome-user"></span>
+                <button id="logout-btn" class="btn-secondary">Deconectare</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="auth-section" class="card auth-card">
+            <div class="tabs">
+                <button id="tab-login" class="tab active">Autentificare</button>
+                <button id="tab-register" class="tab">Înregistrare</button>
+            </div>
+
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Parolă" required>
+                <button type="submit" class="btn-primary">Intră în cont</button>
+            </form>
+
+            <form id="register-form" class="hidden">
+                <input type="text" id="reg-username" placeholder="Nume utilizator" required>
+                <input type="email" id="reg-email" placeholder="Email" required>
+                <input type="password" id="reg-password" placeholder="Parolă" required>
+                <button type="submit" class="btn-primary">Creează cont</button>
+            </form>
+            <p id="auth-msg" class="msg"></p>
+        </section>
+
+        <section id="app-section" class="hidden">
+            <nav class="main-nav">
+                <button class="nav-btn active" data-view="fridge-view">🧊 Frigiderul meu</button>
+                <button class="nav-btn" data-view="recipes-view">📖 Rețete</button>
+                <button class="nav-btn" data-view="planner-view">📅 Planificator & Cumpărături</button>
+            </nav>
+
+            <div id="fridge-view" class="view">
+                <div class="card">
+                    <h2>Adaugă ingredient în frigider</h2>
+                    <form id="add-fridge-form" class="inline-form">
+                        <select id="ingredient-select" required></select>
+                        <input type="number" id="fridge-qty" step="0.1" min="0.1" placeholder="Cantitate" required>
+                        <input type="text" id="fridge-unit" placeholder="Unitate (ex: g, buc, ml)" required>
+                        <button type="submit" class="btn-primary">Adaugă</button>
+                    </form>
+                </div>
+
+                <div class="card">
+                    <h2>Ce am acum în frigider</h2>
+                    <ul id="fridge-list" class="item-list"></ul>
+                </div>
+            </div>
+
+            <div id="recipes-view" class="view hidden">
+                <div class="card">
+                    <div class="section-header">
+                        <h2>Rețete disponibile</h2>
+                        <div>
+                            <button id="btn-all-recipes" class="btn-secondary">Toate rețetele</button>
+                            <button id="btn-match-recipes" class="btn-primary">✨ Ce pot găti acum?</button>
+                        </div>
+                    </div>
+                    <div id="recipes-grid" class="grid"></div>
+                </div>
+            </div>
+
+            <div id="planner-view" class="view hidden">
+                <div class="card">
+                    <h2>Adaugă masă în plan</h2>
+                    <form id="add-plan-form" class="inline-form">
+                        <select id="plan-recipe-select" required></select>
+                        <input type="date" id="plan-date" required>
+                        <select id="plan-meal-type">
+                            <option value="breakfast">Mic dejun</option>
+                            <option value="lunch">Prânz</option>
+                            <option value="snack">Gustare</option>
+                            <option value="dinner">Cină</option>
+                        </select>
+                        <input type="number" id="plan-servings" min="1" value="2" placeholder="Porții" required>
+                        <button type="submit" class="btn-primary">Planifică</button>
+                    </form>
+                </div>
+
+                <div class="two-cols">
+                    <div class="card">
+                        <h2>Meniul planificat</h2>
+                        <ul id="meal-plan-list" class="item-list"></ul>
+                    </div>
+
+                    <div class="card">
+                        <div class="section-header">
+                            <h2>Lista de cumpărături</h2>
+                            <button id="btn-generate-shopping" class="btn-primary">Generează automat</button>
+                        </div>
+                        <ul id="shopping-list" class="item-list"></ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
