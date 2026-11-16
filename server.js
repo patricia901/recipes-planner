@@ -6,6 +6,7 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 app.use(cors());
+app.use(express.static('public'));
 
 const db = mysql.createConnection({
     host: 'localhost',
@@ -34,12 +35,7 @@ app.use('/api/recipes', recipeRoutes);
 const plannerRoutes = require('./routes/planner')(db);
 app.use('/api/planner', plannerRoutes);
 
-app.get('/', (req, res) => {
-    res.send('Server is running and ready for recipes!');
-});
-
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
-
 });
