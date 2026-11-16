@@ -25,6 +25,15 @@ db.connect((err) => {
 const authRoutes = require('./routes/auth')(db);
 app.use('/api/auth', authRoutes);
 
+const fridgeRoutes = require('./routes/fridge')(db);
+app.use('/api/fridge', fridgeRoutes);
+
+const recipeRoutes = require('./routes/recipes')(db);
+app.use('/api/recipes', recipeRoutes);
+
+const plannerRoutes = require('./routes/planner')(db);
+app.use('/api/planner', plannerRoutes);
+
 app.get('/', (req, res) => {
     res.send('Server is running and ready for recipes!');
 });
@@ -32,4 +41,5 @@ app.get('/', (req, res) => {
 const PORT = 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
+
 });
