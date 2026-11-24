@@ -1,7 +1,26 @@
 const express = require('express');
 const router = express.Router();
 
+const VALID_UNITS = ['g', 'ml', 'pcs', 'tbsp', 'tsp', 'cup'];
+
 module.exports = (db) => {
+    // 0. Catalogul de ingrediente (trebuie să fie ÎNAINTEA rutei /:userId)
+    router.get('/ingredients', (req, res) => {
+        const query = `
+            SELECT id, name, category, default_unit
+            FROM ingredients
+            ORDER BY category, name
+        `;
+
+        db.query(query, (err, results) => {
+            if (err) {
+                console.error('Error fetching ingredients catalog:', err);
+                return res.status(500).json({ error: 'Database error fetching ingredients.' });
+            }
+            res.status(200).json(results);
+        });
+    });
+
     // 1. Afișează conținutul frigiderului pentru un utilizator
     router.get('/:userId', (req, res) => {
         const { userId } = req.params;
@@ -17,6 +36,7 @@ module.exports = (db) => {
             FROM user_fridge uf
             JOIN ingredients i ON uf.ingredient_id = i.id
             WHERE uf.user_id = ?
+            ORDER BY i.category, i.name
         `;
 
         db.query(query, [userId], (err, results) => {
@@ -28,12 +48,18 @@ module.exports = (db) => {
         });
     });
 
-    // 2. Adaugă un ingredient în frigider (sau actualizează cantitatea dacă există deja)
+    // 2. Adaugă un ingredient în frigider (sau adună cantitatea dacă există deja)
     router.post('/', (req, res) => {
         const { user_id, ingredient_id, quantity, unit } = req.body;
 
         if (!user_id || !ingredient_id || !quantity || !unit) {
             return res.status(400).json({ error: 'Please provide user_id, ingredient_id, quantity, and unit.' });
+        }
+        if (!VALID_UNITS.includes(unit)) {
+            return res.status(400).json({ error: 'Invalid unit.' });
+        }
+        if (Number(quantity) <= 0) {
+            return res.status(400).json({ error: 'Quantity must be greater than 0.' });
         }
 
         const query = `
